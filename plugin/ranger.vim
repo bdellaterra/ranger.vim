@@ -118,10 +118,18 @@ function! OpenRangerOnVimLoadDir(argv_path)
   let path = expand(a:argv_path)
 
   " Delete empty buffer created by vim
-  Bclose!
+  silent! Bclose!
 
   " Open Ranger
   call OpenRangerIn(path, 'edit')
+
+  " Close stray directory buffers if they remain open
+  if isdirectory(expand('%'))
+    bdelete
+  endif
+  if isdirectory(expand('#'))
+    bdelete #
+  endif
 endfunction
 
 " To open ranger when vim load a directory
